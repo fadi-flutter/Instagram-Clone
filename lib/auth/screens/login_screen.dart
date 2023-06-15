@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/auth/screens/forgot_password.dart';
+import 'package:instagram_clone/auth/screens/signup_screen.dart';
+import 'package:instagram_clone/dashboard/dashboard.dart';
 import 'package:instagram_clone/utils/app_colors.dart';
 import 'package:instagram_clone/utils/app_textstyle.dart';
 import 'package:instagram_clone/utils/functions.dart';
 import 'package:instagram_clone/utils/widgets/auth_button.dart';
 import 'package:instagram_clone/utils/widgets/text_field_widget.dart';
-import 'package:instagram_clone/views/auth/screens/forgot_password.dart';
-import 'package:instagram_clone/views/auth/screens/signup_screen.dart';
-import 'package:instagram_clone/views/dashboard/dashboard.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});

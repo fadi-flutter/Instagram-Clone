@@ -6,6 +6,7 @@ class AppColors {
   static const pink = Color(0xffD01854);
   static const white = Colors.white;
   static Color darkGrey = const Color(0xff121212);
+  static Color mediumGrey = const Color(0xff262626);
   static Color grey = Colors.grey;
   static const lightGrey = Color.fromARGB(255, 242, 242, 242);
 

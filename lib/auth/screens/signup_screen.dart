@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/auth/screens/login_screen.dart';
 import 'package:instagram_clone/utils/app_colors.dart';
 import 'package:instagram_clone/utils/app_textstyle.dart';
 import 'package:instagram_clone/utils/functions.dart';
 import 'package:instagram_clone/utils/widgets/auth_button.dart';
 import 'package:instagram_clone/utils/widgets/text_field_widget.dart';
-import 'package:instagram_clone/views/auth/screens/login_screen.dart';
 
 class SignupScreen extends StatelessWidget {
   const SignupScreen({super.key});

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/auth/screens/login_screen.dart';
 import 'package:instagram_clone/utils/app_colors.dart';
-import 'package:instagram_clone/views/auth/screens/login_screen.dart';
 
 void main() {
   runApp(const MyApp());

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/dashboard/home/components/app_bar.dart';
 import 'package:instagram_clone/utils/app_colors.dart';
 import 'package:instagram_clone/utils/app_textstyle.dart';
 import 'package:instagram_clone/utils/functions.dart';
-import 'package:instagram_clone/views/dashboard/home/components/app_bar.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

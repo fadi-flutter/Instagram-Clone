@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:instagram_clone/dashboard/home/screens/home_screen.dart';
+import 'package:instagram_clone/dashboard/notifications/screens/notifications_screen.dart';
+import 'package:instagram_clone/dashboard/profile/screens/profile_screen.dart';
+import 'package:instagram_clone/dashboard/search/screens/search_screen.dart';
 import 'package:instagram_clone/utils/app_colors.dart';
-import 'package:instagram_clone/views/dashboard/home/screens/home_screen.dart';
-
-import 'profile/screens/profile_screen.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -17,9 +18,9 @@ class _DashboardState extends State<Dashboard> {
   int index = 0;
   List pages = [
     const HomeScreen(),
+    const SearchScreen(),
     const HomeScreen(),
-    const HomeScreen(),
-    const HomeScreen(),
+    const NotificationsScreen(),
     const ProfileScreen(),
   ];
   @override
