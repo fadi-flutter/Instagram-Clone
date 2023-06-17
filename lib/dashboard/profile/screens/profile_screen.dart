@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/dashboard/createpost/screens/show_post.dart';
 import 'package:instagram_clone/dashboard/profile/components/profile_widget.dart';
 import 'package:instagram_clone/utils/app_colors.dart';
 import 'package:instagram_clone/utils/app_textstyle.dart';
@@ -12,6 +13,10 @@ class ProfileScreen extends StatelessWidget {
       backgroundColor: AppColors.darkGrey,
       // appbar
       appBar: AppBar(
+        leading: BackButton(
+          onPressed: () {},
+          color: AppColors.darkGrey,
+        ),
         title: Text(
           'fadi_ops',
           style: AppTextStyle.mediumWhite18,
@@ -132,8 +137,17 @@ class ProfileScreen extends StatelessWidget {
                                     mainAxisSpacing: 2,
                                     crossAxisCount: 3),
                             itemBuilder: (context, index) {
-                              return Container(
-                                color: AppColors.grey,
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const ShowPost()),
+                                  );
+                                },
+                                child: Container(
+                                  color: AppColors.grey,
+                                ),
                               );
                             },
                           ),

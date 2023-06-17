@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/auth/screens/forgot_password.dart';
 import 'package:instagram_clone/auth/screens/signup_screen.dart';
-import 'package:instagram_clone/dashboard/dashboard.dart';
+import 'package:instagram_clone/dashboard/profile/screens/create_profile.dart';
 import 'package:instagram_clone/utils/app_colors.dart';
 import 'package:instagram_clone/utils/app_textstyle.dart';
 import 'package:instagram_clone/utils/functions.dart';
@@ -67,7 +67,7 @@ class LoginScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const Dashboard()),
+                          builder: (context) => const CreateProfile()),
                     );
                   },
                   text: 'Log in',

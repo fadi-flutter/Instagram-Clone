@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:instagram_clone/dashboard/createpost/screens/create_post.dart';
 import 'package:instagram_clone/dashboard/home/screens/home_screen.dart';
 import 'package:instagram_clone/dashboard/notifications/screens/notifications_screen.dart';
 import 'package:instagram_clone/dashboard/profile/screens/profile_screen.dart';
@@ -19,7 +20,7 @@ class _DashboardState extends State<Dashboard> {
   List pages = [
     const HomeScreen(),
     const SearchScreen(),
-    const HomeScreen(),
+    const CreatePost(),
     const NotificationsScreen(),
     const ProfileScreen(),
   ];

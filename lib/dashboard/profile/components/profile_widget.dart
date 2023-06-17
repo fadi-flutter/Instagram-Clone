@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/dashboard/profile/screens/edit_profile.dart';
 import 'package:instagram_clone/utils/app_colors.dart';
 import 'package:instagram_clone/utils/app_textstyle.dart';
 import 'package:instagram_clone/utils/functions.dart';
@@ -91,7 +92,13 @@ class ProfileWidget extends StatelessWidget {
           MaterialButton(
             color: AppColors.black,
             minWidth: double.infinity,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const EditProfile(),
+                  ));
+            },
             child: Text(
               'Edit Profile',
               style: AppTextStyle.mediumWhite14,

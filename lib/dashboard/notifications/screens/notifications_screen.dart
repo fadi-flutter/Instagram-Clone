@@ -10,6 +10,10 @@ class NotificationsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: BackButton(
+          onPressed: () {},
+          color: AppColors.darkGrey,
+        ),
         backgroundColor: AppColors.darkGrey,
         title: Text(
           'Notifications',

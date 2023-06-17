@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "586752885353",
+    "project_id": "todo-firebase-6b64e",
+    "storage_bucket": "todo-firebase-6b64e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586752885353:android:01a305e0f02d9f8bc598f8",
+        "android_client_info": {
+          "package_name": "com.example.instagram_clone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "586752885353-tl00b87qs492sd5o0v55b62a8jrb9bbn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbdg4N7UF0nLBbht6whWxhbBDHzh48Fxo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "586752885353-tl00b87qs492sd5o0v55b62a8jrb9bbn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
