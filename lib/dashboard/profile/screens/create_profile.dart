@@ -42,40 +42,43 @@ class CreateProfile extends StatelessWidget {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              10.height,
-              Center(
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      backgroundColor: AppColors.darkGrey,
-                      radius: 40,
-                      child: Icon(
-                        Icons.photo,
-                        color: AppColors.grey,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                10.height,
+                Center(
+                  child: Column(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: AppColors.darkGrey,
+                        radius: 40,
+                        child: Icon(
+                          Icons.photo,
+                          color: AppColors.grey,
+                        ),
                       ),
-                    ),
-                    12.height,
-                    Text(
-                      'Select picture',
-                      style: AppTextStyle.boldWhite14
-                          .copyWith(color: AppColors.blue),
-                    )
-                  ],
+                      12.height,
+                      Text(
+                        'Select picture',
+                        style: AppTextStyle.boldWhite14
+                            .copyWith(color: AppColors.blue),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              25.height,
-              const EditTextField(
-                text: 'Name',
-              ),
-              const EditTextField(
-                text: 'User Name',
-              ),
-              const EditTextField(
-                text: 'Bio',
-              ),
-            ],
+                25.height,
+                const EditTextField(
+                  text: 'Name',
+                ),
+                const EditTextField(
+                  text: 'User Name',
+                ),
+                const EditTextField(
+                  text: 'Bio',
+                ),
+              ],
+            ),
           ),
         ),
       ),

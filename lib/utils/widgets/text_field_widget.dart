@@ -7,34 +7,36 @@ class TextFieldWidget extends StatelessWidget {
     super.key,
     required this.hintText,
     this.obscureText = false,
-    this.icon,
     this.color,
     this.prefixIcon,
     this.height = 50,
     this.hintStyle,
-    this.radius = 5, this.focusNode,
+    this.radius = 5,
+    this.focusNode,
+    this.controller, this.widget,
   });
   final String hintText;
   final bool obscureText;
-  final Icon? icon;
   final Color? color;
   final Icon? prefixIcon;
   final double height;
   final TextStyle? hintStyle;
+  final TextEditingController? controller;
   final double radius;
+  final Widget? widget;
   final FocusNode? focusNode;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: height,
       child: TextField(
+        controller: controller,
         focusNode: focusNode,
         cursorColor: AppColors.white,
         obscureText: obscureText,
         style: AppTextStyle.mediumWhite14,
         decoration: InputDecoration(
           hintText: hintText,
-          suffixIcon: icon,
           prefixIcon: prefixIcon,
           hintStyle: hintStyle ??
               AppTextStyle.mediumWhite14.copyWith(color: AppColors.grey),
@@ -46,6 +48,7 @@ class TextFieldWidget extends StatelessWidget {
               Radius.circular(radius),
             ),
           ),
+          suffixIcon: widget,
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(radius),
