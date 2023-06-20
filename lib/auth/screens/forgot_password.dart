@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/auth/providers/auth_provider.dart';
 import 'package:instagram_clone/utils/app_colors.dart';
 import 'package:instagram_clone/utils/app_textstyle.dart';
 import 'package:instagram_clone/utils/functions.dart';
 import 'package:instagram_clone/utils/widgets/auth_button.dart';
 import 'package:instagram_clone/utils/widgets/text_field_widget.dart';
+import 'package:provider/provider.dart';
 
 class ForgotPassword extends StatelessWidget {
   const ForgotPassword({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
@@ -47,7 +50,10 @@ class ForgotPassword extends StatelessWidget {
                       .copyWith(color: AppColors.grey),
                 ),
                 30.height,
-                const AuthButton(
+                 AuthButton(
+                  onTap: () {
+                    authProvider.resetPassword(context);
+                  },
                   text: 'Send Email',
                 ),
                 35.height,

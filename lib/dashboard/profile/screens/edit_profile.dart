@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/dashboard/profile/components/edit_text_field.dart';
 import 'package:instagram_clone/utils/app_colors.dart';
 import 'package:instagram_clone/utils/app_textstyle.dart';
 import 'package:instagram_clone/utils/functions.dart';
@@ -55,16 +54,16 @@ class EditProfile extends StatelessWidget {
                   ],
                 ),
               ),
-              25.height,
-              const EditTextField(
-                text: 'Name',
-              ),
-              const EditTextField(
-                text: 'User Name',
-              ),
-              const EditTextField(
-                text: 'Bio',
-              ),
+              // 25.height,
+              // const EditTextField(
+              //   text: 'Name',
+              // ),
+              // const EditTextField(
+              //   text: 'User Name',
+              // ),
+              // const EditTextField(
+              //   text: 'Bio',
+              // ),
             ],
           ),
         ),

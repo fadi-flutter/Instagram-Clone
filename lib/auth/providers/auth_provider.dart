@@ -1,11 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/dashboard/dashboard.dart';
 import 'package:instagram_clone/dashboard/profile/screens/create_profile.dart';
 import 'package:instagram_clone/utils/functions.dart';
@@ -21,11 +18,8 @@ class AuthProvider with ChangeNotifier {
   //login
   final loginEmailC = TextEditingController();
   final loginPasswordC = TextEditingController();
-  //profile
-  XFile profileImage = XFile('');
-  final nameC = TextEditingController();
-  final userNameC = TextEditingController();
-  final bioC = TextEditingController();
+  //reset password
+  final resetpasswordC = TextEditingController();
   //hide Password
   bool hidePassword = true;
   final googleSignIn = GoogleSignIn();
@@ -44,7 +38,7 @@ class AuthProvider with ChangeNotifier {
       );
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const CreateProfile()),
+        MaterialPageRoute(builder: (context) =>  CreateProfile()),
       );
       EasyLoading.dismiss();
     } catch (e) {
@@ -73,7 +67,7 @@ class AuthProvider with ChangeNotifier {
                 MaterialPageRoute(builder: (context) => const Dashboard()),
               )
             : Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const CreateProfile()));
+                MaterialPageRoute(builder: (context) =>  CreateProfile()));
       }
       EasyLoading.dismiss();
     } catch (e) {
@@ -101,8 +95,24 @@ class AuthProvider with ChangeNotifier {
                 MaterialPageRoute(builder: (context) => const Dashboard()),
               )
             : Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const CreateProfile()));
+                MaterialPageRoute(builder: (context) =>  CreateProfile()));
       }
+      EasyLoading.dismiss();
+    } catch (e) {
+      EasyLoading.dismiss();
+      showToast(context, 'Check your internet connection or try again');
+    }
+  }
+
+  resetPassword(BuildContext context) {
+    if (resetpasswordC.text.isEmpty) {
+      showToast(context, 'Enter Email');
+      return;
+    }
+    try {
+      EasyLoading.show();
+      _auth.sendPasswordResetEmail(email: resetpasswordC.text);
+      showToast(context, 'Email Sent');
       EasyLoading.dismiss();
     } catch (e) {
       EasyLoading.dismiss();
@@ -119,44 +129,6 @@ class AuthProvider with ChangeNotifier {
       return true;
     }
     return false;
-  }
-
-  uploadProfile() async {
-    String url = '';
-    if (profileImage.path.isNotEmpty) {
-      url = await uploadImage();
-    }
-    _firestore.collection(userCollection).doc(_auth.currentUser!.uid).set(
-      {
-        'id': _auth.currentUser!.uid,
-        'name': nameC.text.toString(),
-        'userName': userNameC.text.toString(),
-        'bio': bioC.text.toString(),
-        'image': url
-      },
-    );
-  }
-
-  uploadImage() async {
-    UploadTask? uploadTask;
-    final storage = FirebaseStorage.instance.ref();
-    final path = 'images/${profileImage.path}';
-    final file = File(profileImage.path);
-    final ref = storage.child(path);
-    uploadTask = ref.putFile(file);
-    final snapshot =
-        await uploadTask.whenComplete(() => print('Image Uploaded'));
-    final url = await snapshot.ref.getDownloadURL();
-    return url;
-  }
-
-  getProfileImage() async {
-    final img = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (img != null) {
-      profileImage = XFile(img.path);
-      return File(img.path);
-    }
-    return null;
   }
 
 //obscurePassword

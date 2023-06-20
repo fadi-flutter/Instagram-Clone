@@ -1,14 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/dashboard/createpost/screens/show_post.dart';
 import 'package:instagram_clone/dashboard/profile/components/profile_widget.dart';
+import 'package:instagram_clone/dashboard/profile/providers/profile_provider.dart';
 import 'package:instagram_clone/utils/app_colors.dart';
 import 'package:instagram_clone/utils/app_textstyle.dart';
 import 'package:instagram_clone/utils/functions.dart';
+import 'package:provider/provider.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  @override
+  void initState() {
+    super.initState();
+    final myProvider = Provider.of<ProfileProvider>(context, listen: false);
+    myProvider.getProfile();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final profileProvider = Provider.of<ProfileProvider>(context);
     return Scaffold(
       backgroundColor: AppColors.darkGrey,
       // appbar
@@ -18,7 +34,8 @@ class ProfileScreen extends StatelessWidget {
           color: AppColors.darkGrey,
         ),
         title: Text(
-          'fadi_ops',
+          //username
+          profileProvider.userName,
           style: AppTextStyle.mediumWhite18,
         ),
         actions: [
@@ -35,7 +52,9 @@ class ProfileScreen extends StatelessWidget {
           child: Column(
             children: [
               //profileSection
-              const ProfileWidget(),
+              ProfileWidget(
+                profileProvider: profileProvider,
+              ),
               //highlights
               SizedBox(
                 height: 122,

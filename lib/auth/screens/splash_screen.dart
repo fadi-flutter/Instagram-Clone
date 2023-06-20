@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/auth/screens/login_screen.dart';
 import 'package:instagram_clone/dashboard/dashboard.dart';
 import 'package:instagram_clone/dashboard/profile/screens/create_profile.dart';
 import 'package:instagram_clone/utils/app_colors.dart';
@@ -15,7 +16,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  final _auth = FirebaseAuth.instance.currentUser;
+  final User? _auth = FirebaseAuth.instance.currentUser;
   @override
   void initState() {
     super.initState();
@@ -23,12 +24,14 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<bool> getUserData() async {
-    final data = await FirebaseFirestore.instance
-        .collection(userCollection)
-        .doc(_auth!.uid)
-        .get();
-    if (data.exists) {
-      return true;
+    if (_auth != null) {
+      final data = await FirebaseFirestore.instance
+          .collection(userCollection)
+          .doc(_auth!.uid)
+          .get();
+      if (data.exists) {
+        return true;
+      }
     }
     return false;
   }
@@ -36,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
   navigateScreen() async {
     bool profileCreated = await getUserData();
     Future.delayed(
-      const Duration(seconds: 4),
+      const Duration(seconds: 3),
       () {
         Navigator.pushReplacement(
           context,
@@ -44,8 +47,8 @@ class _SplashScreenState extends State<SplashScreen> {
             builder: (context) => _auth != null
                 ? profileCreated
                     ? const Dashboard()
-                    : const CreateProfile()
-                : const CreateProfile(),
+                    : CreateProfile()
+                : LoginScreen(),
           ),
         );
       },

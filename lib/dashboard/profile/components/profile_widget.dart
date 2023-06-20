@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/dashboard/profile/providers/profile_provider.dart';
 import 'package:instagram_clone/dashboard/profile/screens/edit_profile.dart';
 import 'package:instagram_clone/utils/app_colors.dart';
 import 'package:instagram_clone/utils/app_textstyle.dart';
@@ -7,12 +8,13 @@ import 'package:instagram_clone/utils/functions.dart';
 class ProfileWidget extends StatelessWidget {
   const ProfileWidget({
     super.key,
+    required this.profileProvider,
   });
-
+  final ProfileProvider profileProvider;
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -21,11 +23,13 @@ class ProfileWidget extends StatelessWidget {
             children: [
               Container(
                 margin: const EdgeInsets.only(bottom: 7),
-                height: 105,
-                width: 105,
-                decoration: const BoxDecoration(
+                height: 90,
+                width: 90,
+                decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage(banner), fit: BoxFit.cover),
+                        //image
+                        image: NetworkImage(profileProvider.image),
+                        fit: BoxFit.cover),
                     color: AppColors.white,
                     shape: BoxShape.circle),
               ),
@@ -35,7 +39,8 @@ class ProfileWidget extends StatelessWidget {
                   Column(
                     children: [
                       Text(
-                        '37',
+                        //posts
+                        profileProvider.posts,
                         style: AppTextStyle.boldWhite16,
                       ),
                       Text(
@@ -47,7 +52,8 @@ class ProfileWidget extends StatelessWidget {
                   Column(
                     children: [
                       Text(
-                        '100',
+                        //followers
+                        profileProvider.followers.length.toString(),
                         style: AppTextStyle.boldWhite16,
                       ),
                       Text(
@@ -59,7 +65,8 @@ class ProfileWidget extends StatelessWidget {
                   Column(
                     children: [
                       Text(
-                        '162',
+                        //followings
+                        profileProvider.followings.length.toString(),
                         style: AppTextStyle.boldWhite16,
                       ),
                       Text(
@@ -77,12 +84,13 @@ class ProfileWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Fahad Ali',
+                //name
+                profileProvider.name,
                 style: AppTextStyle.mediumWhite14,
               ),
               2.height,
               Text(
-                'This is description you read it but cannot change\n because i have not integrated backend yet 😂',
+                profileProvider.bio,
                 style: AppTextStyle.regularWhite12,
                 maxLines: 4,
               ),

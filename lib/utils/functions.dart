@@ -17,6 +17,8 @@ void showToast(BuildContext context, String text) {
 }
 
 const String userCollection = 'user';
+const String postCollection = 'post';
+
 
 /// A function that accepts a FirebaseAuthException and returns a string
 /// describing the error.

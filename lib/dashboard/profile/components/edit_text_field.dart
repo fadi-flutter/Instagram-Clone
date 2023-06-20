@@ -6,8 +6,10 @@ class EditTextField extends StatelessWidget {
   const EditTextField({
     super.key,
     required this.text,
+    required this.controller,
   });
   final String text;
+  final TextEditingController controller;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -22,6 +24,7 @@ class EditTextField extends StatelessWidget {
           SizedBox(
             height: 45,
             child: TextField(
+              controller: controller,
               cursorColor: AppColors.white,
               style: AppTextStyle.mediumWhite14,
               decoration: const InputDecoration(

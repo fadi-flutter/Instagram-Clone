@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/dashboard/createpost/providers/createpost_provider.dart';
 import 'package:instagram_clone/dashboard/profile/components/edit_text_field.dart';
 import 'package:instagram_clone/utils/app_colors.dart';
 import 'package:instagram_clone/utils/app_textstyle.dart';
 import 'package:instagram_clone/utils/functions.dart';
+import 'package:provider/provider.dart';
 
 class CreatePost extends StatelessWidget {
   const CreatePost({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final createPostProvider = Provider.of<CreatePostProvider>(context);
     final sizeh = MediaQuery.of(context).size.height * 1;
     return Scaffold(
       body: SafeArea(
@@ -38,15 +41,23 @@ class CreatePost extends StatelessWidget {
               //   fit: BoxFit.cover,
               // ),
             ),
-            const EditTextField(text: 'Description'),
+            EditTextField(
+              text: 'Description',
+              controller: createPostProvider.descriptionC,
+            ),
             const Spacer(),
-            MaterialButton(
-              color: AppColors.blue,
-              minWidth: double.infinity,
-              onPressed: () {},
-              child: Text(
-                'Post',
-                style: AppTextStyle.mediumWhite14,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: MaterialButton(
+                color: AppColors.blue,
+                minWidth: double.infinity,
+                onPressed: () {
+                  createPostProvider.uploadPost(context);
+                },
+                child: Text(
+                  'Post',
+                  style: AppTextStyle.mediumWhite14,
+                ),
               ),
             ),
             10.height,
