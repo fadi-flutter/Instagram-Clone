@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/dashboard/createpost/screens/show_post.dart';
+import 'package:instagram_clone/dashboard/profile/components/profile_highlights.dart';
 import 'package:instagram_clone/dashboard/profile/components/profile_widget.dart';
+import 'package:instagram_clone/dashboard/profile/models/post_model.dart';
 import 'package:instagram_clone/dashboard/profile/providers/profile_provider.dart';
 import 'package:instagram_clone/utils/app_colors.dart';
 import 'package:instagram_clone/utils/app_textstyle.dart';
-import 'package:instagram_clone/utils/functions.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -39,12 +40,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
           style: AppTextStyle.mediumWhite18,
         ),
         actions: [
-          const Icon(
-            Icons.list,
-            color: AppColors.white,
-            size: 26,
+          IconButton(
+            onPressed: () {
+              profileProvider.getProfile();
+            },
+            icon: const Icon(
+              Icons.list,
+              color: AppColors.white,
+              size: 26,
+            ),
           ),
-          15.width,
         ],
       ),
       body: SafeArea(
@@ -63,53 +68,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   scrollDirection: Axis.horizontal,
                   itemCount: 10,
                   itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 09),
-                      child: Column(
-                        children: [
-                          index != 0
-                              ? Container(
-                                  margin: const EdgeInsets.only(bottom: 7),
-                                  height: 70,
-                                  width: 70,
-                                  decoration: BoxDecoration(
-                                      image: const DecorationImage(
-                                          image: AssetImage(banner),
-                                          fit: BoxFit.cover),
-                                      border: Border.all(
-                                          color: AppColors.pink,
-                                          width: 2,
-                                          strokeAlign:
-                                              BorderSide.strokeAlignOutside),
-                                      color: AppColors.white,
-                                      shape: BoxShape.circle),
-                                )
-                              : Container(
-                                  margin: const EdgeInsets.only(bottom: 7),
-                                  height: 70,
-                                  width: 70,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color:
-                                              AppColors.grey.withOpacity(0.4),
-                                          width: 1,
-                                          strokeAlign:
-                                              BorderSide.strokeAlignOutside),
-                                      color: AppColors.darkGrey,
-                                      shape: BoxShape.circle),
-                                  child: IconButton(
-                                    icon: const Icon(Icons.add),
-                                    onPressed: () {},
-                                  ),
-                                ),
-                          Text(
-                            index == 0 ? 'New' : 'Fahad Ali',
-                            style: AppTextStyle.regularWhite12,
-                          )
-                        ],
-                      ),
-                    );
+                    return ProfileHighlights(index: index);
                   },
                 ),
               ),
@@ -144,32 +103,68 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ],
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height - 294,
+                      height: MediaQuery.of(context).size.height - 274,
                       child: TabBarView(
                         children: [
-                          GridView.builder(
-                            shrinkWrap: true,
-                            itemCount: 2,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisSpacing: 2,
-                                    mainAxisSpacing: 2,
-                                    crossAxisCount: 3),
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => const ShowPost()),
+                          StreamBuilder<List<PostModel>>(
+                              stream: profileProvider.getPostsStream(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError) {
+                                  return Center(
+                                    child: Text(
+                                      'Please check your internet connection\nand try again!',
+                                      style: AppTextStyle.regularBlack14,
+                                    ),
                                   );
-                                },
-                                child: Container(
-                                  color: AppColors.grey,
-                                ),
-                              );
-                            },
-                          ),
+                                }
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+                                if (snapshot.data!.isEmpty) {
+                                  Center(
+                                    child: Text(
+                                      'Not posts found',
+                                      style: AppTextStyle.mediumWhite14,
+                                    ),
+                                  );
+                                }
+                                return GridView.builder(
+                                  padding: const EdgeInsets.only(top: 2),
+                                  shrinkWrap: true,
+                                  itemCount: snapshot.data!.length,
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisSpacing: 2,
+                                          mainAxisSpacing: 2,
+                                          crossAxisCount: 3),
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => ShowPost(
+                                              post: snapshot.data![index],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image: NetworkImage(
+                                                snapshot.data![index].image),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              }),
                           GridView.builder(
                             shrinkWrap: true,
                             itemCount: 14,

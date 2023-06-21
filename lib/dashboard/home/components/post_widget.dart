@@ -1,16 +1,23 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/dashboard/home/components/comments_section.dart';
+import 'package:instagram_clone/dashboard/profile/models/post_model.dart';
+import 'package:instagram_clone/dashboard/profile/providers/profile_provider.dart';
 import 'package:instagram_clone/utils/app_colors.dart';
 import 'package:instagram_clone/utils/app_textstyle.dart';
 import 'package:instagram_clone/utils/functions.dart';
+import 'package:provider/provider.dart';
 
 class PostWidget extends StatelessWidget {
-  const PostWidget({
+  PostWidget({
     super.key,
+    required this.post,
   });
-
+  final PostModel post;
+  final _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
+    final profileProvider = Provider.of<ProfileProvider>(context);
     return Column(
       children: [
         Container(
@@ -20,9 +27,9 @@ class PostWidget extends StatelessWidget {
             children: [
               Wrap(
                 children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                     radius: 20,
-                    backgroundImage: AssetImage(banner),
+                    backgroundImage: NetworkImage(post.userImage),
                   ),
                   4.width,
                   Wrap(
@@ -31,11 +38,11 @@ class PostWidget extends StatelessWidget {
                     children: [
                       2.height,
                       Text(
-                        'fadi_ops',
+                        post.userName,
                         style: AppTextStyle.regularWhite12,
                       ),
                       Text(
-                        'Fsd, Pakistan',
+                        '${post.city}, ${post.country}',
                         style: AppTextStyle.regularWhite12,
                       ),
                     ],
@@ -53,9 +60,9 @@ class PostWidget extends StatelessWidget {
         Container(
           height: 350,
           width: double.infinity,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(banner),
+              image: NetworkImage(post.image),
               fit: BoxFit.cover,
             ),
           ),
@@ -68,7 +75,19 @@ class PostWidget extends StatelessWidget {
               Wrap(
                 spacing: 18,
                 children: [
-                  const Icon(Icons.favorite_outline, size: 26),
+                  GestureDetector(
+                    onTap: () {
+                      profileProvider.handelLikes(post);
+                    },
+                    child: Icon(
+                        post.likes.contains(_auth.currentUser!.uid)
+                            ? Icons.favorite
+                            : Icons.favorite_outline,
+                        color: post.likes.contains(_auth.currentUser!.uid)
+                            ? AppColors.pink
+                            : AppColors.white,
+                        size: 26),
+                  ),
                   GestureDetector(
                       onTap: () {
                         showModalBottomSheet(
@@ -90,15 +109,16 @@ class PostWidget extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 12),
           alignment: Alignment.centerLeft,
           child: Text(
-            '100 likes',
+            '${post.likes.length} likes',
             style: AppTextStyle.boldWhite12,
           ),
         ),
         4.height,
         Container(
+          alignment: Alignment.centerLeft,
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Text(
-            'This is description you read it but cannot change because i have not integrated backend yet 😂',
+            post.description,
             style: AppTextStyle.regularWhite12,
           ),
         ),

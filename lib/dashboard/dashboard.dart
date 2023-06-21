@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:instagram_clone/dashboard/createpost/providers/createpost_provider.dart';
 import 'package:instagram_clone/dashboard/createpost/screens/create_post.dart';
+import 'package:instagram_clone/dashboard/home/providers/home_provider.dart';
 import 'package:instagram_clone/dashboard/home/screens/home_screen.dart';
 import 'package:instagram_clone/dashboard/notifications/screens/notifications_screen.dart';
 import 'package:instagram_clone/dashboard/profile/providers/profile_provider.dart';
@@ -38,7 +39,8 @@ class _DashboardState extends State<Dashboard> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ProfileProvider()),
-        ChangeNotifierProvider(create: (context) => CreatePostProvider())
+        ChangeNotifierProvider(create: (context) => CreatePostProvider()),
+        ChangeNotifierProvider(create: (context) => HomeProvider())
       ],
       child: Scaffold(
         body: pages[index],

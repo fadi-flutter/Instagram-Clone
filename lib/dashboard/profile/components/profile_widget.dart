@@ -40,7 +40,7 @@ class ProfileWidget extends StatelessWidget {
                     children: [
                       Text(
                         //posts
-                        profileProvider.posts,
+                        profileProvider.posts.toString(),
                         style: AppTextStyle.boldWhite16,
                       ),
                       Text(

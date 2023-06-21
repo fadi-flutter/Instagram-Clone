@@ -7,16 +7,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/dashboard/dashboard.dart';
+import 'package:instagram_clone/dashboard/profile/models/post_model.dart';
 import 'package:instagram_clone/utils/functions.dart';
 
 class ProfileProvider with ChangeNotifier {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
+  CollectionReference<Map<String, dynamic>> docForum =
+      FirebaseFirestore.instance.collection(postCollection);
   //profile
   String name = '';
   String userName = '';
   String image = '';
-  String posts = '';
+  int posts = 0;
   String id = '';
   String bio = '';
   List followers = [];
@@ -27,6 +30,7 @@ class ProfileProvider with ChangeNotifier {
   final bioC = TextEditingController();
 
   getProfile() async {
+    EasyLoading.show();
     DocumentSnapshot<Map<String, dynamic>> data = await _firestore
         .collection(userCollection)
         .doc(_auth.currentUser!.uid)
@@ -39,7 +43,18 @@ class ProfileProvider with ChangeNotifier {
     bio = data['bio'];
     followers = List.from(data['followers']);
     followings = List.from(data['following']);
+    EasyLoading.dismiss();
     notifyListeners();
+  }
+
+  getPostsStream() {
+    return _firestore
+        .collection(postCollection)
+        .where('id', isEqualTo: _auth.currentUser!.uid)
+        .snapshots()
+        .map(
+          (event) => event.docs.map((e) => PostModel.fromFireStore(e)).toList(),
+        );
   }
 
   uploadProfile(BuildContext context) async {
@@ -63,7 +78,7 @@ class ProfileProvider with ChangeNotifier {
           'userName': userNameC.text.toLowerCase().toString(),
           'bio': bioC.text.toString(),
           'image': url,
-          'posts': '0',
+          'posts': 0,
           'followers': [],
           'following': []
         },
@@ -100,5 +115,18 @@ class ProfileProvider with ChangeNotifier {
       return File(img.path);
     }
     return null;
+  }
+
+  handelLikes(PostModel post) {
+    final userUid = _auth.currentUser!.uid;
+    if (post.likes.contains(userUid)) {
+      docForum.doc(post.docID).update({
+        'likes': FieldValue.arrayRemove([userUid])
+      });
+    } else {
+      docForum.doc(post.docID).update({
+        'likes': FieldValue.arrayUnion([userUid])
+      });
+    }
   }
 }
