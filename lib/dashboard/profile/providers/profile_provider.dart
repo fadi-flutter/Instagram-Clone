@@ -29,12 +29,10 @@ class ProfileProvider with ChangeNotifier {
   final userNameC = TextEditingController();
   final bioC = TextEditingController();
 
-  getProfile() async {
+  getProfile(String userID) async {
     EasyLoading.show();
-    DocumentSnapshot<Map<String, dynamic>> data = await _firestore
-        .collection(userCollection)
-        .doc(_auth.currentUser!.uid)
-        .get();
+    DocumentSnapshot<Map<String, dynamic>> data =
+        await _firestore.collection(userCollection).doc(userID).get();
     name = data['name'];
     userName = data['userName'];
     image = data['image'];
@@ -47,10 +45,10 @@ class ProfileProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  getPostsStream() {
+  getPostsStream(String userID) {
     return _firestore
         .collection(postCollection)
-        .where('id', isEqualTo: _auth.currentUser!.uid)
+        .where('id', isEqualTo: userID)
         .snapshots()
         .map(
           (event) => event.docs.map((e) => PostModel.fromFireStore(e)).toList(),

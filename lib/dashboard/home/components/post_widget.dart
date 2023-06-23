@@ -1,12 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/dashboard/home/components/comments_section.dart';
 import 'package:instagram_clone/dashboard/profile/models/post_model.dart';
-import 'package:instagram_clone/dashboard/profile/providers/profile_provider.dart';
 import 'package:instagram_clone/utils/app_colors.dart';
 import 'package:instagram_clone/utils/app_textstyle.dart';
 import 'package:instagram_clone/utils/functions.dart';
-import 'package:provider/provider.dart';
 
 class PostWidget extends StatelessWidget {
   PostWidget({
@@ -15,9 +14,10 @@ class PostWidget extends StatelessWidget {
   });
   final PostModel post;
   final _auth = FirebaseAuth.instance;
+  final CollectionReference<Map<String, dynamic>> docForum =
+      FirebaseFirestore.instance.collection(postCollection);
   @override
   Widget build(BuildContext context) {
-    final profileProvider = Provider.of<ProfileProvider>(context);
     return Column(
       children: [
         Container(
@@ -31,7 +31,7 @@ class PostWidget extends StatelessWidget {
                     radius: 20,
                     backgroundImage: NetworkImage(post.userImage),
                   ),
-                  4.width,
+                  7.width,
                   Wrap(
                     direction: Axis.vertical,
                     spacing: 1,
@@ -77,7 +77,7 @@ class PostWidget extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      profileProvider.handelLikes(post);
+                      handelLikes(post);
                     },
                     child: Icon(
                         post.likes.contains(_auth.currentUser!.uid)
@@ -93,7 +93,9 @@ class PostWidget extends StatelessWidget {
                         showModalBottomSheet(
                           context: context,
                           builder: (context) {
-                            return const CommentsSection();
+                            return CommentsSection(
+                              postID: post.docID,
+                            );
                           },
                         );
                       },
@@ -129,5 +131,18 @@ class PostWidget extends StatelessWidget {
         )
       ],
     );
+  }
+
+  handelLikes(PostModel post) {
+    final userUid = _auth.currentUser!.uid;
+    if (post.likes.contains(userUid)) {
+      docForum.doc(post.docID).update({
+        'likes': FieldValue.arrayRemove([userUid])
+      });
+    } else {
+      docForum.doc(post.docID).update({
+        'likes': FieldValue.arrayUnion([userUid])
+      });
+    }
   }
 }

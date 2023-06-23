@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/dashboard/search/models/search_model.dart';
 import 'package:instagram_clone/utils/app_colors.dart';
 import 'package:instagram_clone/utils/app_textstyle.dart';
 import 'package:instagram_clone/utils/functions.dart';
@@ -6,8 +7,9 @@ import 'package:instagram_clone/utils/functions.dart';
 class SearchedUser extends StatelessWidget {
   const SearchedUser({
     super.key,
+    required this.user,
   });
-
+  final SearchModel user;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,9 +21,9 @@ class SearchedUser extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const CircleAvatar(
+          CircleAvatar(
             radius: 23,
-            backgroundImage: AssetImage(banner),
+            backgroundImage: NetworkImage(user.image),
           ),
           6.width,
           Wrap(
@@ -30,11 +32,11 @@ class SearchedUser extends StatelessWidget {
             children: [
               2.height,
               Text(
-                'fadi_ops',
+                user.userName,
                 style: AppTextStyle.regularWhite12,
               ),
               Text(
-                'Fahad Ali',
+                user.name,
                 style:
                     AppTextStyle.regularWhite12.copyWith(color: AppColors.grey),
               ),

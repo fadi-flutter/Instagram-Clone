@@ -57,7 +57,6 @@ class CreatePostProvider with ChangeNotifier {
         },
       ).then((value) async {
         showToast(context, 'Uploaded');
-        await profileProvider.getProfile();
         descriptionC.clear();
         profileImage = XFile('');
         notifyListeners();

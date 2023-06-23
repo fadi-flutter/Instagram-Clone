@@ -59,7 +59,7 @@ class HomeScreen extends StatelessWidget {
             //body
             Expanded(
               child: StreamBuilder<List<PostModel>>(
-                stream: homeProvider.getforuPosts(),
+                stream: homeProvider.getforumPosts(),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return Center(

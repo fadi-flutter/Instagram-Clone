@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:instagram_clone/dashboard/createpost/providers/createpost_provider.dart';
@@ -19,14 +20,17 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  static final auth = FirebaseAuth.instance;
   DateTime? lastPressedAt;
   int index = 4;
   List pages = [
     const HomeScreen(),
-    const SearchScreen(),
+    SearchScreen(),
     const CreatePost(),
     const NotificationsScreen(),
-    const ProfileScreen(),
+    ProfileScreen(
+      userID: auth.currentUser!.uid,
+    ),
   ];
   @override
   Widget build(BuildContext context) {

@@ -39,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
   navigateScreen() async {
     bool profileCreated = await getUserData();
     Future.delayed(
-      const Duration(seconds: 3),
+      const Duration(seconds: 1),
       () {
         Navigator.pushReplacement(
           context,

@@ -13,12 +13,14 @@ class TextFieldWidget extends StatelessWidget {
     this.hintStyle,
     this.radius = 5,
     this.focusNode,
-    this.controller, this.widget,
+    this.controller, this.widget, this.onTap,
   });
   final String hintText;
   final bool obscureText;
   final Color? color;
+  
   final Icon? prefixIcon;
+  final VoidCallback? onTap;
   final double height;
   final TextStyle? hintStyle;
   final TextEditingController? controller;
@@ -32,6 +34,7 @@ class TextFieldWidget extends StatelessWidget {
       child: TextField(
         controller: controller,
         focusNode: focusNode,
+        onTap: onTap,
         cursorColor: AppColors.white,
         obscureText: obscureText,
         style: AppTextStyle.mediumWhite14,

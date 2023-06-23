@@ -9,8 +9,8 @@ import 'package:instagram_clone/utils/app_textstyle.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
-
+  const ProfileScreen({super.key, required this.userID});
+  final String userID;
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
@@ -20,7 +20,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     final myProvider = Provider.of<ProfileProvider>(context, listen: false);
-    myProvider.getProfile();
+    myProvider.getProfile(widget.userID);
   }
 
   @override
@@ -42,7 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              profileProvider.getProfile();
+              profileProvider.getProfile(widget.userID);
             },
             icon: const Icon(
               Icons.list,
@@ -107,7 +107,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: TabBarView(
                         children: [
                           StreamBuilder<List<PostModel>>(
-                              stream: profileProvider.getPostsStream(),
+                              stream:
+                                  profileProvider.getPostsStream(widget.userID),
                               builder: (context, snapshot) {
                                 if (snapshot.hasError) {
                                   return Center(
