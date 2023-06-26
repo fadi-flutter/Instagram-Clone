@@ -115,6 +115,39 @@ class ProfileProvider with ChangeNotifier {
     return null;
   }
 
+  handleFollowUser(String friendID, BuildContext context) async {
+    try {
+      final userUid = _auth.currentUser!.uid;
+      EasyLoading.show();
+      if (followers.contains(userUid)) {
+        await _firestore.collection(userCollection).doc(friendID).update({
+          'followers': FieldValue.arrayRemove([_auth.currentUser!.uid])
+        });
+        await _firestore
+            .collection(userCollection)
+            .doc(_auth.currentUser!.uid)
+            .update({
+          'following': FieldValue.arrayRemove([friendID])
+        });
+      } else {
+        await _firestore.collection(userCollection).doc(friendID).update({
+          'followers': FieldValue.arrayUnion([_auth.currentUser!.uid])
+        });
+        await _firestore
+            .collection(userCollection)
+            .doc(_auth.currentUser!.uid)
+            .update({
+          'following': FieldValue.arrayUnion([friendID])
+        });
+      }
+      getProfile(friendID);
+      EasyLoading.dismiss();
+    } catch (e) {
+      EasyLoading.dismiss();
+      showToast(context, 'Check your internet connection or try again later');
+    }
+  }
+
   handelLikes(PostModel post) {
     final userUid = _auth.currentUser!.uid;
     if (post.likes.contains(userUid)) {

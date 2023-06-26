@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/dashboard/home/components/post_widget.dart';
+import 'package:instagram_clone/dashboard/createpost/screens/single_post.dart';
 import 'package:instagram_clone/dashboard/profile/models/post_model.dart';
 import 'package:instagram_clone/utils/app_colors.dart';
 import 'package:instagram_clone/utils/app_textstyle.dart';
@@ -24,7 +24,7 @@ class ShowPost extends StatelessWidget {
         ),
       ),
       body: SafeArea(
-          child: PostWidget(
+          child: SinglePost(
         post: post,
       )),
     );

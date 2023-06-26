@@ -1,16 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:instagram_clone/dashboard/home/models/comment_model.dart';
 import 'package:instagram_clone/dashboard/profile/models/post_model.dart';
-import 'package:instagram_clone/dashboard/profile/providers/profile_provider.dart';
 import 'package:instagram_clone/utils/functions.dart';
-import 'package:provider/provider.dart';
 
 class HomeProvider with ChangeNotifier {
   final _firestore = FirebaseFirestore.instance;
   //comment
-  final commentC = TextEditingController();
+  String commentC = '';
   int fieldHeight = 0;
+
+  getComment(String comment) {
+    commentC = comment;
+    notifyListeners();
+  }
 
   getforumPosts() {
     return _firestore.collection(postCollection).snapshots().map(
@@ -18,31 +22,41 @@ class HomeProvider with ChangeNotifier {
         );
   }
 
+  Stream<List<CommentModel>> getCommentsStream(String postID) {
+    return _firestore
+        .collection(postCollection)
+        .doc(postID)
+        .collection(commentCollection)
+        .snapshots()
+        .map(
+          (event) =>
+              event.docs.map((e) => CommentModel.fromFireStore(e)).toList(),
+        );
+  }
+
   addComments(BuildContext context, String postID) async {
-    if (commentC.text.isEmpty) {
-      print(commentC.text);
+    if (commentC.isEmpty) {
       return;
     }
     try {
       EasyLoading.show();
-      final profileProvider =
-          Provider.of<ProfileProvider>(context, listen: false);
+      final data = await getCurrentUserProfile();
       await _firestore
           .collection(postCollection)
           .doc(postID)
           .collection(commentCollection)
           .add({
         'time_stamp': DateTime.now(),
-        'userName': profileProvider.userName,
-        'userImage': profileProvider.image,
-        'comment': commentC.text,
-        'userID': profileProvider.id,
+        'userName': data['userName'],
+        'userImage': data['image'],
+        'comment': commentC,
+        'userID': data['id'],
       });
-      commentC.clear();
+      getComment('');
       EasyLoading.dismiss();
     } catch (e) {
       EasyLoading.dismiss();
-      showToast(context, 'Check your internet connection or try again!');
+      showToast(context, 'Check your internet connection or try again');
     }
   }
 

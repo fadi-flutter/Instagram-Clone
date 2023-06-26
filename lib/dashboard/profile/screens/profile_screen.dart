@@ -9,8 +9,10 @@ import 'package:instagram_clone/utils/app_textstyle.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key, required this.userID});
+  const ProfileScreen(
+      {super.key, required this.userID, required this.viewFriend});
   final String userID;
+  final bool viewFriend;
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
@@ -59,6 +61,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               //profileSection
               ProfileWidget(
                 profileProvider: profileProvider,
+                viewFriend: widget.viewFriend,
               ),
               //highlights
               SizedBox(
@@ -107,65 +110,66 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: TabBarView(
                         children: [
                           StreamBuilder<List<PostModel>>(
-                              stream:
-                                  profileProvider.getPostsStream(widget.userID),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasError) {
-                                  return Center(
-                                    child: Text(
-                                      'Please check your internet connection\nand try again!',
-                                      style: AppTextStyle.regularBlack14,
-                                    ),
-                                  );
-                                }
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                }
-                                if (snapshot.data!.isEmpty) {
-                                  Center(
-                                    child: Text(
-                                      'Not posts found',
-                                      style: AppTextStyle.mediumWhite14,
-                                    ),
-                                  );
-                                }
-                                return GridView.builder(
-                                  padding: const EdgeInsets.only(top: 2),
-                                  shrinkWrap: true,
-                                  itemCount: snapshot.data!.length,
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisSpacing: 2,
-                                          mainAxisSpacing: 2,
-                                          crossAxisCount: 3),
-                                  itemBuilder: (context, index) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => ShowPost(
-                                              post: snapshot.data![index],
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: NetworkImage(
-                                                snapshot.data![index].image),
+                            stream:
+                                profileProvider.getPostsStream(widget.userID),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError) {
+                                return Center(
+                                  child: Text(
+                                    'Please check your internet connection\nand try again!',
+                                    style: AppTextStyle.regularBlack14,
+                                  ),
+                                );
+                              }
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                              if (snapshot.data!.isEmpty) {
+                                Center(
+                                  child: Text(
+                                    'Not posts found',
+                                    style: AppTextStyle.mediumWhite14,
+                                  ),
+                                );
+                              }
+                              return GridView.builder(
+                                padding: const EdgeInsets.only(top: 2),
+                                shrinkWrap: true,
+                                itemCount: snapshot.data!.length,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisSpacing: 2,
+                                        mainAxisSpacing: 2,
+                                        crossAxisCount: 3),
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => ShowPost(
+                                            post: snapshot.data![index],
                                           ),
                                         ),
+                                      );
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: NetworkImage(
+                                              snapshot.data![index].image),
+                                        ),
                                       ),
-                                    );
-                                  },
-                                );
-                              }),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          ),
                           GridView.builder(
                             shrinkWrap: true,
                             itemCount: 14,

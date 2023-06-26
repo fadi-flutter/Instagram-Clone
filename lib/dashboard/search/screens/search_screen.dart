@@ -70,7 +70,9 @@ class SearchScreen extends StatelessWidget {
                               builder: (context) => ChangeNotifierProvider(
                                 create: (context) => ProfileProvider(),
                                 child: ProfileScreen(
-                                    userID: snapshot.data![index].id),
+                                  userID: snapshot.data![index].id,
+                                  viewFriend: true,
+                                ),
                               ),
                             ),
                           );

@@ -12,33 +12,31 @@ class TextFieldWidget extends StatelessWidget {
     this.height = 50,
     this.hintStyle,
     this.radius = 5,
-    this.focusNode,
-    this.controller, this.widget, this.onTap,
+    this.controller,
+    this.widget, this.onChanged,
   });
   final String hintText;
   final bool obscureText;
   final Color? color;
-  
   final Icon? prefixIcon;
-  final VoidCallback? onTap;
   final double height;
   final TextStyle? hintStyle;
   final TextEditingController? controller;
   final double radius;
   final Widget? widget;
-  final FocusNode? focusNode;
+  final void Function(String)? onChanged;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: height,
       child: TextField(
         controller: controller,
-        focusNode: focusNode,
-        onTap: onTap,
         cursorColor: AppColors.white,
         obscureText: obscureText,
         style: AppTextStyle.mediumWhite14,
+        onChanged: onChanged,
         decoration: InputDecoration(
+          
           hintText: hintText,
           prefixIcon: prefixIcon,
           hintStyle: hintStyle ??

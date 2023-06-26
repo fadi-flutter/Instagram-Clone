@@ -2,22 +2,34 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/dashboard/home/components/comments_section.dart';
-import 'package:instagram_clone/dashboard/home/providers/home_provider.dart';
 import 'package:instagram_clone/dashboard/profile/models/post_model.dart';
 import 'package:instagram_clone/utils/app_colors.dart';
 import 'package:instagram_clone/utils/app_textstyle.dart';
 import 'package:instagram_clone/utils/functions.dart';
-import 'package:provider/provider.dart';
 
-class PostWidget extends StatelessWidget {
-  PostWidget({
+class SinglePost extends StatefulWidget {
+  const SinglePost({
     super.key,
     required this.post,
   });
   final PostModel post;
+
+  @override
+  State<SinglePost> createState() => _SinglePostState();
+}
+
+class _SinglePostState extends State<SinglePost> {
   final _auth = FirebaseAuth.instance;
+
   final CollectionReference<Map<String, dynamic>> docForum =
       FirebaseFirestore.instance.collection(postCollection);
+  List likes = [];
+  @override
+  void initState() {
+    super.initState();
+    likes = List.from(widget.post.likes);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -31,7 +43,7 @@ class PostWidget extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 20,
-                    backgroundImage: NetworkImage(post.userImage),
+                    backgroundImage: NetworkImage(widget.post.userImage),
                   ),
                   7.width,
                   Wrap(
@@ -40,11 +52,11 @@ class PostWidget extends StatelessWidget {
                     children: [
                       2.height,
                       Text(
-                        post.userName,
+                        widget.post.userName,
                         style: AppTextStyle.regularWhite12,
                       ),
                       Text(
-                        '${post.city}, ${post.country}',
+                        '${widget.post.city}, ${widget.post.country}',
                         style: AppTextStyle.regularWhite12,
                       ),
                     ],
@@ -64,7 +76,7 @@ class PostWidget extends StatelessWidget {
           width: double.infinity,
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage(post.image),
+              image: NetworkImage(widget.post.image),
               fit: BoxFit.fill,
             ),
           ),
@@ -79,13 +91,17 @@ class PostWidget extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      handelLikes(post);
+                      likes.contains(_auth.currentUser!.uid)
+                          ? likes.remove(_auth.currentUser!.uid)
+                          : likes.add(_auth.currentUser!.uid);
+                      handelLikes(widget.post);
+                      setState(() {});
                     },
                     child: Icon(
-                        post.likes.contains(_auth.currentUser!.uid)
+                        likes.contains(_auth.currentUser!.uid)
                             ? Icons.favorite
                             : Icons.favorite_outline,
-                        color: post.likes.contains(_auth.currentUser!.uid)
+                        color: likes.contains(_auth.currentUser!.uid)
                             ? AppColors.pink
                             : AppColors.white,
                         size: 26),
@@ -95,9 +111,8 @@ class PostWidget extends StatelessWidget {
                         showModalBottomSheet(
                           context: context,
                           builder: (context) {
-                            return ChangeNotifierProvider(
-                              create: ((context) => HomeProvider()),
-                              child: CommentsSection(postID: post.docID),
+                            return CommentsSection(
+                              postID: widget.post.docID,
                             );
                           },
                         );
@@ -114,7 +129,7 @@ class PostWidget extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 12),
           alignment: Alignment.centerLeft,
           child: Text(
-            '${post.likes.length} likes',
+            '${likes.length} likes',
             style: AppTextStyle.boldWhite12,
           ),
         ),
@@ -123,7 +138,7 @@ class PostWidget extends StatelessWidget {
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Text(
-            post.description,
+            widget.post.description,
             style: AppTextStyle.regularWhite12,
           ),
         ),

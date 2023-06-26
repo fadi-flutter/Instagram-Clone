@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/dashboard/profile/providers/profile_provider.dart';
 import 'package:instagram_clone/dashboard/profile/screens/edit_profile.dart';
@@ -6,11 +7,14 @@ import 'package:instagram_clone/utils/app_textstyle.dart';
 import 'package:instagram_clone/utils/functions.dart';
 
 class ProfileWidget extends StatelessWidget {
-  const ProfileWidget({
+  ProfileWidget({
     super.key,
     required this.profileProvider,
+    required this.viewFriend,
   });
   final ProfileProvider profileProvider;
+  final bool viewFriend;
+  final _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -89,28 +93,60 @@ class ProfileWidget extends StatelessWidget {
                 style: AppTextStyle.mediumWhite14,
               ),
               2.height,
-              Text(
-                profileProvider.bio,
-                style: AppTextStyle.regularWhite12,
-                maxLines: 4,
+              SizedBox(
+                width: 300,
+                child: Text(
+                  profileProvider.bio,
+                  style: AppTextStyle.regularWhite12,
+                  maxLines: 4,
+                ),
               ),
             ],
           ),
           13.height,
-          MaterialButton(
-            color: AppColors.black,
-            minWidth: double.infinity,
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const EditProfile(),
-                  ));
-            },
-            child: Text(
-              'Edit Profile',
-              style: AppTextStyle.mediumWhite14,
-            ),
+          Row(
+            children: [
+              //checking if user viewing his own profile or friends profile
+              viewFriend
+                  ? Expanded(
+                      child: MaterialButton(
+                        //checking if current user already following or not
+                        color: profileProvider.followers
+                                .contains(_auth.currentUser!.uid)
+                            ? AppColors.black
+                            : AppColors.blue,
+                        onPressed: () {
+                          //if user already following then remove otherwise add
+                          profileProvider.handleFollowUser(
+                              profileProvider.id, context);
+                        },
+                        child: Text(
+                          //checking if current user already following or not
+                          profileProvider.followers
+                                  .contains(_auth.currentUser!.uid)
+                              ? 'Cancel Following'
+                              : 'Follow',
+                          style: AppTextStyle.mediumWhite14,
+                        ),
+                      ),
+                    )
+                  : Expanded(
+                      child: MaterialButton(
+                        color: AppColors.black,
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const EditProfile(),
+                              ));
+                        },
+                        child: Text(
+                          'Edit Profile',
+                          style: AppTextStyle.mediumWhite14,
+                        ),
+                      ),
+                    )
+            ],
           ),
         ],
       ),

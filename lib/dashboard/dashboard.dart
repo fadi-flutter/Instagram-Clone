@@ -30,6 +30,7 @@ class _DashboardState extends State<Dashboard> {
     const NotificationsScreen(),
     ProfileScreen(
       userID: auth.currentUser!.uid,
+      viewFriend: false,
     ),
   ];
   @override
