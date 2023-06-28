@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/dashboard/reels/screens/reels_screen.dart';
 import 'package:instagram_clone/utils/app_colors.dart';
 import 'package:instagram_clone/utils/functions.dart';
 
@@ -32,7 +32,14 @@ class AppBarWidget extends StatelessWidget {
           Wrap(
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ReelsScreen(),
+                    ),
+                  );
+                },
                 icon: const Icon(
                   Icons.live_tv_outlined,
                   color: AppColors.white,

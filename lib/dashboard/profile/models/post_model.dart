@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class PostModel {
   String city, country, description, id, image, userName, userImage, docID;
   List likes;
+  bool isImage;
 
   PostModel(
       {required this.city,
@@ -13,7 +14,7 @@ class PostModel {
       required this.likes,
       required this.userImage,
       required this.userName,
-      required this.docID});
+      required this.docID,required this.isImage});
 
   factory PostModel.fromFireStore(DocumentSnapshot doc) {
     Map data = doc.data() as Map<String, dynamic>;
@@ -26,6 +27,7 @@ class PostModel {
       likes: List.from(data['likes']),
       userImage: data['userImage'],
       userName: data['userName'],
+      isImage: data['isImage'],
       docID: doc.id,
     );
   }

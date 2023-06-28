@@ -2,10 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:instagram_clone/auth/providers/auth_provider.dart';
-import 'package:instagram_clone/auth/screens/splash_screen.dart';
-import 'package:instagram_clone/firebase_options.dart';
+import 'package:instagram_clone/dashboard/dashboard.dart';
 import 'package:instagram_clone/utils/app_colors.dart';
 import 'package:provider/provider.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
             background: AppColors.black,
           ),
         ),
-        home: const SplashScreen(),
+        home: const Dashboard(),
       ),
     );
   }

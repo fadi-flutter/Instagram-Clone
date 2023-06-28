@@ -86,6 +86,7 @@ class HomeScreen extends StatelessWidget {
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
                       return PostWidget(
+                        provider: homeProvider,
                         post: snapshot.data![index],
                       );
                     },

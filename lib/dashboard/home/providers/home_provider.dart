@@ -4,12 +4,16 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:instagram_clone/dashboard/home/models/comment_model.dart';
 import 'package:instagram_clone/dashboard/profile/models/post_model.dart';
 import 'package:instagram_clone/utils/functions.dart';
+import 'package:video_player/video_player.dart';
 
 class HomeProvider with ChangeNotifier {
   final _firestore = FirebaseFirestore.instance;
   //comment
   String commentC = '';
   int fieldHeight = 0;
+  //video
+  VideoPlayerController? videoC;
+  bool playVideo = false;
 
   getComment(String comment) {
     commentC = comment;
@@ -59,6 +63,10 @@ class HomeProvider with ChangeNotifier {
       showToast(context, 'Check your internet connection or try again');
     }
   }
+
+  
+
+  
 
   changeHeight(int height) {
     fieldHeight = height;

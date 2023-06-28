@@ -26,7 +26,7 @@ class _DashboardState extends State<Dashboard> {
   List pages = [
     const HomeScreen(),
     SearchScreen(),
-    const CreatePost(),
+     CreatePost(),
     const NotificationsScreen(),
     ProfileScreen(
       userID: auth.currentUser!.uid,

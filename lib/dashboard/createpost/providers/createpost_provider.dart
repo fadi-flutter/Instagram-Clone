@@ -10,8 +10,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/dashboard/profile/providers/profile_provider.dart';
 import 'package:instagram_clone/utils/functions.dart';
 import 'package:provider/provider.dart';
+import 'package:video_player/video_player.dart';
 
 class CreatePostProvider with ChangeNotifier {
+  VideoPlayerController? videoC;
+
   //auth
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
@@ -20,6 +23,8 @@ class CreatePostProvider with ChangeNotifier {
   XFile profileImage = XFile('');
   String city = '';
   String country = '';
+  bool selectedImage = true;
+  bool playVideo = false;
 
   uploadPost(BuildContext context) async {
     if (profileImage.path.isEmpty) {
@@ -38,7 +43,7 @@ class CreatePostProvider with ChangeNotifier {
       String url = '';
       url = await uploadImage();
       await _firestore
-          .collection(userCollection)
+          .collection(postCollection)
           .doc(_auth.currentUser!.uid)
           .update({
         'posts': profileProvider.posts + 1,
@@ -48,6 +53,7 @@ class CreatePostProvider with ChangeNotifier {
           'time_stamp': DateTime.now(),
           'image': url,
           'likes': [],
+          'isImage': selectedImage,
           'description': descriptionC.text,
           'id': _auth.currentUser!.uid,
           'userName': profileProvider.userName,
@@ -81,14 +87,37 @@ class CreatePostProvider with ChangeNotifier {
     return url;
   }
 
-  pickProfileImage() async {
-    final img = await ImagePicker().pickImage(source: ImageSource.gallery);
+  pickSource(bool isImage) async {
+    final img = isImage
+        ? await ImagePicker().pickImage(source: ImageSource.gallery)
+        : await ImagePicker().pickVideo(source: ImageSource.gallery);
+
     if (img != null) {
       profileImage = XFile(img.path);
+      selectedImage = isImage;
+
+      if (!selectedImage) {
+        initializeVideo(profileImage.path);
+      }
       notifyListeners();
-      return File(img.path);
     }
     return null;
+  }
+
+  initializeVideo(String source) {
+    videoC = VideoPlayerController.file(File(source))
+      ..initialize().then((_) {});
+  }
+
+  playpauseVideo() {
+    if (playVideo) {
+      playVideo = false;
+      videoC?.pause();
+    } else {
+      playVideo = true;
+      videoC?.play();
+    }
+    notifyListeners();
   }
 
   Future<void> getLocationData(BuildContext context) async {
