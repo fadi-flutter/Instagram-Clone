@@ -34,7 +34,7 @@ class ProfileWidget extends StatelessWidget {
                         //image
                         image: NetworkImage(profileProvider.image),
                         fit: BoxFit.cover),
-                    color: AppColors.white,
+                    color: AppColors.darkGrey,
                     shape: BoxShape.circle),
               ),
               Wrap(

@@ -39,11 +39,11 @@ class CreatePostProvider with ChangeNotifier {
       EasyLoading.show();
       final profileProvider =
           Provider.of<ProfileProvider>(context, listen: false);
-      await getLocationData(context);
+       getLocationData(context);
       String url = '';
       url = await uploadImage();
       await _firestore
-          .collection(postCollection)
+          .collection(userCollection)
           .doc(_auth.currentUser!.uid)
           .update({
         'posts': profileProvider.posts + 1,

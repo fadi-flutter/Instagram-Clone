@@ -8,7 +8,6 @@ import 'package:instagram_clone/utils/app_colors.dart';
 import 'package:instagram_clone/utils/app_textstyle.dart';
 import 'package:instagram_clone/utils/functions.dart';
 import 'package:provider/provider.dart';
-import 'package:video_player/video_player.dart';
 
 // ignore: must_be_immutable
 class PostWidget extends StatelessWidget {
@@ -25,12 +24,6 @@ class PostWidget extends StatelessWidget {
       FirebaseFirestore.instance.collection(postCollection);
   @override
   Widget build(BuildContext context) {
-    if (!post.isImage) {
-      provider.videoC = VideoPlayerController.network(post.image)
-        ..initialize().then((value) {
-          provider.videoC?.play();
-        });
-    }
     return Column(
       children: [
         Container(
@@ -70,35 +63,17 @@ class PostWidget extends StatelessWidget {
           ),
         ),
         10.height,
-        post.isImage
-            ? Container(
-                height: 350,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(post.image),
-                    fit: BoxFit.fill,
-                  ),
-                ),
-              )
-            : Stack(
-                alignment: Alignment.center,
-                children: [
-                  SizedBox(
-                    height: 350,
-                    child: VideoPlayer(provider.videoC!),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      // provider.playpauseVideo();
-                    },
-                    icon: Icon(
-                      provider.playVideo ? Icons.pause : Icons.play_arrow,
-                      color: AppColors.grey,
-                    ),
-                  )
-                ],
-              ),
+        Container(
+          height: 350,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: AppColors.darkGrey,
+            image: DecorationImage(
+              image: NetworkImage(post.image),
+              fit: BoxFit.fill,
+            ),
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           child: Row(

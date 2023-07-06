@@ -158,7 +158,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
+                                        color: AppColors.darkGrey,
                                         image: DecorationImage(
+                                          
                                           fit: BoxFit.cover,
                                           image: NetworkImage(
                                               snapshot.data![index].image),
